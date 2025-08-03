@@ -1,12 +1,12 @@
 package com.emakers.Biblioteca.data.dtos.request;
 
-public record LivroRequestDTO(
+public record PessoaRequestDTO(
 
         String nome,
 
-        String autor,
+        String email,
 
-        int lancamento
+        String cpf
 
 ) {
 }

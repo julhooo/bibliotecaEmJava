@@ -1,14 +1,14 @@
 package com.emakers.Biblioteca.data.entity;
 
 
+import com.emakers.Biblioteca.data.dtos.request.LivroRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name ="livros")
 
 public class Livro {
@@ -25,5 +25,12 @@ public class Livro {
 
     @Column (name = "lancamento", nullable = false)
     private int lancamento;
+
+    @Builder
+    public Livro(LivroRequestDTO livrorequestdto){
+        this.nome = livrorequestdto.nome();
+        this.autor = livrorequestdto.autor();
+        this.lancamento = livrorequestdto.lancamento();
+    }
 
 }

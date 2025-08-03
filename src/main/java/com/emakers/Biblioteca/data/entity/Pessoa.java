@@ -1,14 +1,14 @@
 package com.emakers.Biblioteca.data.entity;
 
 
+import com.emakers.Biblioteca.data.dtos.request.PessoaRequestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name ="pessoa")
 
 public class Pessoa {
@@ -28,5 +28,12 @@ public class Pessoa {
 
     @Column (name = "cpf", nullable = false, length = 11)
     private String cpf;
+
+    @Builder
+    public Pessoa(PessoaRequestDTO pessoarequestdto){
+        this.nome = pessoarequestdto.nome();
+        this.email = pessoarequestdto.email();
+        this.cpf = pessoarequestdto.cpf();
+    }
 
 }
