@@ -5,9 +5,9 @@ import com.emakers.Biblioteca.data.entity.Pessoa;
 
 public record EmprestimoRequestDTO(
 
-    Pessoa pessoa,
+    Long idpessoa,
 
-    Livro livro
+    Long idlivro
 
 ) {
 }

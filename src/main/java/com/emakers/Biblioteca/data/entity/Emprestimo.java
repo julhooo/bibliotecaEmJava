@@ -28,9 +28,9 @@ public class Emprestimo {
     private Livro livro;
 
     @Builder
-    public Emprestimo(EmprestimoRequestDTO emprestimorequestdto){
-        this.pessoa = emprestimorequestdto.pessoa();
-        this.livro = emprestimorequestdto.livro();
+    public Emprestimo(Pessoa pessoa, Livro livro){
+        this.pessoa = pessoa;
+        this.livro = livro;
     }
 
 }
