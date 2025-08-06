@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/empréstimo")
+@RequestMapping("/emprestimo")
 public class EmprestimoController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class EmprestimoController {
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.getAllEmprestimos());
     }
 
-    @GetMapping(value = "/{idEmprestimo")
+    @GetMapping(value = "/{idEmprestimo}")
     public ResponseEntity<EmprestimoResponseDTO> getEmprestimoById(@PathVariable Long idEmprestimo){
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.getEmprestimoById(idEmprestimo));
     }

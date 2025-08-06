@@ -43,5 +43,4 @@ public class LivroController {
     public ResponseEntity<String> deleteLivro(@PathVariable Long idLivro){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.deleteLivro(idLivro));
     }
-
 }

@@ -1,5 +1,6 @@
 package com.emakers.Biblioteca.service;
 
+import com.emakers.Biblioteca.data.dtos.request.CreatePessoaDTO;
 import com.emakers.Biblioteca.data.dtos.request.PessoaRequestDTO;
 import com.emakers.Biblioteca.data.dtos.response.PessoaResponseDTO;
 import com.emakers.Biblioteca.data.entity.Pessoa;
@@ -29,8 +30,8 @@ public class PessoaService {
         return new PessoaResponseDTO(pessoa);
     }
 
-    public PessoaResponseDTO createPessoa(PessoaRequestDTO pessoaRequestDTO){
-        Pessoa pessoa = new Pessoa(pessoaRequestDTO);
+    public PessoaResponseDTO createPessoa(CreatePessoaDTO createPessoaDTO){
+        Pessoa pessoa = new Pessoa(createPessoaDTO);
         pessoaRepository.save(pessoa);
 
         return new PessoaResponseDTO(pessoa);
