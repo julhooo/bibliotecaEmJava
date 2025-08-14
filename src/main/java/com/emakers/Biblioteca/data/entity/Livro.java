@@ -26,6 +26,9 @@ public class Livro {
     @Column (name = "lancamento", nullable = false)
     private int lancamento;
 
+    @Column (name ="emprestado")
+    private boolean emprestado = false;
+
     @Builder
     public Livro(LivroRequestDTO livrorequestdto){
         this.nome = livrorequestdto.nome();

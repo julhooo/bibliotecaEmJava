@@ -4,12 +4,15 @@ import com.emakers.Biblioteca.data.entity.Emprestimo;
 import com.emakers.Biblioteca.data.entity.Livro;
 import com.emakers.Biblioteca.data.entity.Pessoa;
 
+import java.time.LocalDate;
+
 public record EmprestimoResponseDTO(
 
         String nomepessoa,
         String email,
         String nomelivro,
-        String autor
+        String autor,
+        LocalDate datadevolucao
 
 ) {
     public EmprestimoResponseDTO(Emprestimo emprestimo){
@@ -17,7 +20,8 @@ public record EmprestimoResponseDTO(
                 emprestimo.getPessoa().getNome(),
                 emprestimo.getPessoa().getEmail(),
                 emprestimo.getLivro().getNome(),
-                emprestimo.getLivro().getAutor()
+                emprestimo.getLivro().getAutor(),
+                emprestimo.getDatadevolucao()
         );
     }
 }

@@ -37,6 +37,9 @@ public class Pessoa implements UserDetails {
     @Column (name = "cpf", nullable = false, length = 11)
     private String cpf;
 
+    @Column (name = "empréstimos")
+    private Integer emprestimos=0;
+
     @Column (name = "role", nullable = false, length = 4)
     private PessoaRole role;
 

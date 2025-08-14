@@ -8,14 +8,17 @@ public record LivroResponseDTO(
 
         String autor,
 
-        int lancamento
+        int lancamento,
+
+        boolean emprestado
 
 ) {
     public LivroResponseDTO(Livro livro){
         this(
                 livro.getNome(),
                 livro.getAutor(),
-                livro.getLancamento()
+                livro.getLancamento(),
+                livro.isEmprestado()
         );
     }
 }

@@ -2,17 +2,17 @@ package com.emakers.Biblioteca.data.entity;
 
 public enum PessoaRole {
 
-    ADMIN("admin"),
+    ADMIN(0),
 
-    USER("user");
+    USER(1);
 
-    private String role;
+    private int role;
 
-    PessoaRole(String role){
+    PessoaRole(int role){
         this.role = role;
     }
 
-    public String getRole(){
+    public int getRole(){
         return role;
     }
 }

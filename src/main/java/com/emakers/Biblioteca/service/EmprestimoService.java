@@ -9,6 +9,9 @@ import com.emakers.Biblioteca.data.repository.EmprestimoRepository;
 import com.emakers.Biblioteca.data.repository.LivroRepository;
 import com.emakers.Biblioteca.data.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +22,9 @@ public class EmprestimoService {
 
     @Autowired
     private EmprestimoRepository emprestimoRepository;
+    @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
     private LivroRepository livroRepository;
 
     public List<EmprestimoResponseDTO> getAllEmprestimos(){
@@ -34,14 +39,33 @@ public class EmprestimoService {
         return new EmprestimoResponseDTO(emprestimo);
     }
 
-    public EmprestimoResponseDTO createEmprestimo(EmprestimoRequestDTO emprestimoRequestDTO){
+    public List<EmprestimoResponseDTO> getAllEmprestimoById(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((UserDetails) auth.getPrincipal()).getUsername();
+        List <Emprestimo> emprestimos = emprestimoRepository.findByUsername(email);
+        return emprestimos.stream().map(EmprestimoResponseDTO::new).collect(Collectors.toList());
+    }
+
+    public String createEmprestimo(EmprestimoRequestDTO emprestimoRequestDTO){
         Pessoa pessoa = returnPessoa(emprestimoRequestDTO);
         Livro livro = returnLivro(emprestimoRequestDTO);
-        Emprestimo emprestimo = new Emprestimo(pessoa, livro);
+        if(livro.isEmprestado()){
+            return "Este livro está emprestado";
+        }
+        if(pessoa.getEmprestimos()==5){
+            return "Limite de empréstimos atingido";
+        }
+        else {
 
-        emprestimoRepository.save(emprestimo);
+            livro.setEmprestado(true);
+            livroRepository.save(livro);
+            pessoa.setEmprestimos(pessoa.getEmprestimos()+1);
+            pessoaRepository.save(pessoa);
+            Emprestimo emprestimo = new Emprestimo(pessoa, livro);
+            emprestimoRepository.save(emprestimo);
 
-        return new EmprestimoResponseDTO(emprestimo);
+            return "Empréstimo realizado com sucesso!";
+        }
     }
 
     public EmprestimoResponseDTO updateEmprestimo(Long idEmprestimo, EmprestimoRequestDTO emprestimoRequestDTO){
@@ -55,18 +79,36 @@ public class EmprestimoService {
         return new EmprestimoResponseDTO(emprestimo);
     }
 
+    public String  renovar(Long idEmprestimo){
+        Emprestimo emprestimo = returnEmprestimo(idEmprestimo);
+
+        emprestimo.setData(emprestimo.getDatadevolucao().plusDays(7));
+
+        emprestimoRepository.save(emprestimo);
+
+        return "Renovação concluída, nova data de devolução: " + emprestimo.getDatadevolucao();
+    }
+
     public String deleteEmprestimo(Long idEmprestimo){
         Emprestimo emprestimo = returnEmprestimo(idEmprestimo);
+        Pessoa pessoa = emprestimo.getPessoa();
+        Livro livro = emprestimo.getLivro();
+
+        livro.setEmprestado(false);
+        livroRepository.save(livro);
+        pessoa.setEmprestimos(pessoa.getEmprestimos()-1);
+        pessoaRepository.save(pessoa);
+
         emprestimoRepository.delete(emprestimo);
 
-        return "Empréstimo " + idEmprestimo + " foi deletado!";
+        return "Empréstimo " + idEmprestimo + " foi finalizado!";
     }
 
     public Pessoa returnPessoa (EmprestimoRequestDTO emprestimoRequestDTO){
         return pessoaRepository.findById(emprestimoRequestDTO.idpessoa()).orElseThrow(()-> new RuntimeException("Pessoa não encontrada."));
     }
     public Livro returnLivro (EmprestimoRequestDTO emprestimoRequestDTO){
-        return livroRepository.findById(emprestimoRequestDTO.idpessoa()).orElseThrow(()-> new RuntimeException("Livro não encontrado."));
+        return livroRepository.findById(emprestimoRequestDTO.idlivro()).orElseThrow(()-> new RuntimeException("Livro não encontrado."));
     }
     public Emprestimo returnEmprestimo (Long idEmprestimo){
         return emprestimoRepository.findById(idEmprestimo).orElseThrow(()-> new RuntimeException("Empréstimo não encontrado."));

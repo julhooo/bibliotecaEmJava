@@ -8,7 +8,9 @@ public record PessoaResponseDTO(
 
         String email,
 
-        String cpf
+        String cpf,
+
+        int emprestimos
 
 
 ) {
@@ -16,7 +18,8 @@ public record PessoaResponseDTO(
         this(
                 pessoa.getNome(),
                 pessoa.getEmail(),
-                pessoa.getCpf()
+                pessoa.getCpf(),
+                pessoa.getEmprestimos()
         );
     }
 }

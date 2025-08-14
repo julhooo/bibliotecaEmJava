@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -27,10 +31,20 @@ public class Emprestimo {
     @JoinColumn(name = "idLivro")
     private Livro livro;
 
+    @Column (name = "DataRetirada")
+    LocalDate data = LocalDate.now();
+
+    @Column (name = "DataDevolucao")
+    LocalDate datadevolucao = data.plusDays(7);
+
+    @Column (name = "username")
+    String username;
+
     @Builder
     public Emprestimo(Pessoa pessoa, Livro livro){
         this.pessoa = pessoa;
         this.livro = livro;
+        username = pessoa.getUsername();
     }
 
 }

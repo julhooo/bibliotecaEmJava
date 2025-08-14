@@ -28,9 +28,19 @@ public class EmprestimoController {
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.getEmprestimoById(idEmprestimo));
     }
 
+    @GetMapping(value = "/meusemprestimos")
+    public ResponseEntity<List<EmprestimoResponseDTO>> getMyEmprestimos(){
+        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.getAllEmprestimoById());
+    }
+
     @PostMapping(value = "/create")
-    public ResponseEntity<EmprestimoResponseDTO> createEmprestimo(@RequestBody EmprestimoRequestDTO emprestimoRequestDTO){
+    public ResponseEntity<String> createEmprestimo(@RequestBody EmprestimoRequestDTO emprestimoRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.createEmprestimo(emprestimoRequestDTO));
+    }
+
+    @PutMapping(value = "/renovar/{idEmprestimo}")
+    public ResponseEntity<String> renovarEmprestimo(@PathVariable Long idEmprestimo){
+        return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.renovar(idEmprestimo));
     }
 
     @PutMapping(value = "/update/{idEmprestimo}")
