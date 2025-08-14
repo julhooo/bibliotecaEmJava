@@ -1,6 +1,9 @@
 package com.emakers.Biblioteca.controller;
 
 import com.emakers.Biblioteca.data.dtos.request.AuthenticationDTO;
+import com.emakers.Biblioteca.data.dtos.response.LoginDTO;
+import com.emakers.Biblioteca.data.entity.Pessoa;
+import com.emakers.Biblioteca.domo.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     @Autowired
+    TokenService tokenService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("")
@@ -22,7 +28,9 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((Pessoa)auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginDTO(token));
     }
 
 }
