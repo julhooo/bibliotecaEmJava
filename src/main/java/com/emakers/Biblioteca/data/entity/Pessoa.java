@@ -38,7 +38,7 @@ public class Pessoa implements UserDetails {
     private String cpf;
 
     @Column (name = "empréstimos")
-    private Integer emprestimos=0;
+    private int emprestimos=0;
 
     @Column (name = "role", nullable = false, length = 4)
     private PessoaRole role;

@@ -28,6 +28,12 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(
+                        "/swagger-ui.html",
+                       "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs.yaml"
+                        ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pessoa/create").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pessoa/{idPessoa}").hasRole("ADMIN")
