@@ -3,7 +3,6 @@ package com.emakers.Biblioteca.controller;
 import com.emakers.Biblioteca.data.dtos.request.LivroRequestDTO;
 import com.emakers.Biblioteca.data.dtos.response.LivroResponseDTO;
 import com.emakers.Biblioteca.service.LivroService;
-import com.emakers.Biblioteca.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

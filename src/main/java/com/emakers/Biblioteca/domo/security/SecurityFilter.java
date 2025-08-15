@@ -1,5 +1,6 @@
 package com.emakers.Biblioteca.domo.security;
 
+import com.emakers.Biblioteca.data.entity.Pessoa;
 import com.emakers.Biblioteca.data.repository.PessoaRepository;
 import com.emakers.Biblioteca.service.PessoaService;
 import jakarta.servlet.FilterChain;
@@ -32,9 +33,11 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         if(token != null){
             var subject = tokenService.validateToken(token);
-            UserDetails user = pessoaRepository.findByEmail(subject);
+            Pessoa pessoa = pessoaRepository.findByEmail(subject);
 
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(
+                    pessoa, null, pessoa.getAuthorities()
+            );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

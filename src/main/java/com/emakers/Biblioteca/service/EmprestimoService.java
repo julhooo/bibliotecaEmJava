@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +43,10 @@ public class EmprestimoService {
     public List<EmprestimoResponseDTO> getAllEmprestimoById(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = ((UserDetails) auth.getPrincipal()).getUsername();
-        List <Emprestimo> emprestimos = emprestimoRepository.findByUsername(email);
+        Pessoa pessoa = pessoaRepository.findByEmail(email);
+        Long id = pessoa.getIdPessoa();
+
+        List <Emprestimo> emprestimos = emprestimoRepository.findByPessoa_IdPessoa(id);
         return emprestimos.stream().map(EmprestimoResponseDTO::new).collect(Collectors.toList());
     }
 
@@ -82,11 +86,16 @@ public class EmprestimoService {
     public String  renovar(Long idEmprestimo){
         Emprestimo emprestimo = returnEmprestimo(idEmprestimo);
 
-        emprestimo.setData(emprestimo.getDatadevolucao().plusDays(7));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = ((UserDetails) auth.getPrincipal()).getUsername();
 
-        emprestimoRepository.save(emprestimo);
-
-        return "Renovação concluída, nova data de devolução: " + emprestimo.getDatadevolucao();
+        if(!Objects.equals(emprestimo.getUsername(), email)){
+            return "Empréstimo de outro usuário";
+        } else {
+            emprestimo.setDatadevolucao(emprestimo.getDatadevolucao().plusDays(7));
+            emprestimoRepository.save(emprestimo);
+            return "Renovação concluída, nova data de devolução: " + emprestimo.getDatadevolucao();
+        }
     }
 
     public String deleteEmprestimo(Long idEmprestimo){

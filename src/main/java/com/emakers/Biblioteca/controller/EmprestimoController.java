@@ -48,7 +48,7 @@ public class EmprestimoController {
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.updateEmprestimo(idEmprestimo,emprestimoRequestDTO));
     }
 
-    @DeleteMapping(value = "/delete/{idEmprestimo}")
+    @DeleteMapping(value = "/devolucao/{idEmprestimo}")
     public ResponseEntity<String> deleteEmprestimo(@PathVariable Long idEmprestimo){
         return ResponseEntity.status(HttpStatus.OK).body(emprestimoService.deleteEmprestimo(idEmprestimo));
     }

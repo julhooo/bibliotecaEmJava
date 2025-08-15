@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EmprestimoRepository extends JpaRepository<Emprestimo,Long>{
-    List<Emprestimo> findByUsername(String username);
+    List<Emprestimo> findByPessoa_IdPessoa(Long idpessoa);
 }
