@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -43,11 +44,16 @@ public class EmprestimoService {
     public List<EmprestimoResponseDTO> getAllEmprestimoById(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = ((UserDetails) auth.getPrincipal()).getUsername();
-        Pessoa pessoa = pessoaRepository.findByEmail(email);
-        Long id = pessoa.getIdPessoa();
 
-        List <Emprestimo> emprestimos = emprestimoRepository.findByPessoa_IdPessoa(id);
-        return emprestimos.stream().map(EmprestimoResponseDTO::new).collect(Collectors.toList());
+        List<Emprestimo> todosEmprestimos = emprestimoRepository.findAll();
+
+        List<EmprestimoResponseDTO> emprestimos = new ArrayList<>();
+        for (Emprestimo e : todosEmprestimos) {
+            if (e.getPessoa().getEmail().equals(email)) {
+                emprestimos.add(new EmprestimoResponseDTO(e));
+            }
+        }
+        return emprestimos;
     }
 
     public String createEmprestimo(EmprestimoRequestDTO emprestimoRequestDTO){

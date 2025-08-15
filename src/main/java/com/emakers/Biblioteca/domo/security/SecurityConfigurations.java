@@ -28,12 +28,6 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                        "/swagger-ui.html",
-                       "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/v3/api-docs.yaml"
-                        ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/pessoa/create").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pessoa/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pessoa/all").hasRole("ADMIN")
@@ -47,11 +41,17 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/emprestimo/create").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/emprestimo/update/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/emprestimo/devolucao/*").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/emprestimo/meusemprestimos").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/emprestimo/renovar/*").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/emprestimo/meusemprestimos").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/livro/all").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/emprestimo/renovar/*").authenticated()
                         .requestMatchers(HttpMethod.GET, "/livro/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

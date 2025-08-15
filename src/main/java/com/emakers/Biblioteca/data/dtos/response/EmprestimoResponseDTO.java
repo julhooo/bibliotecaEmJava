@@ -15,7 +15,7 @@ public record EmprestimoResponseDTO(
         LocalDate datadevolucao
 
 ) {
-    public EmprestimoResponseDTO(Emprestimo emprestimo){
+    public EmprestimoResponseDTO(Emprestimo emprestimo) {
         this(
                 emprestimo.getPessoa().getNome(),
                 emprestimo.getPessoa().getEmail(),
