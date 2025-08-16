@@ -46,12 +46,15 @@ public class LivroService {
         return new LivroResponseDTO(livro);
     }
 
-    public String deleteLivro (Long idLivro){
+    public String deleteLivro (Long idLivro) {
         Livro livro = returnLivro(idLivro);
-        livroRepository.delete(livro);
+        if (livro.getEmprestados() != 0) {
+            return "O livro não pode ser removido enquanto estiver emprestado";
+        } else {
+            livroRepository.delete(livro);
 
-        return "Livro " + idLivro + " deletado com sucesso!";
-    }
+            return "Livro " + idLivro + " deletado com sucesso!";
+        }}
 
     public Livro returnLivro(Long idLivro){
         return livroRepository.findById(idLivro).orElseThrow(()->new RuntimeException("Livro não encontrado"));

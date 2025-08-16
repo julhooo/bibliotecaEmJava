@@ -6,7 +6,9 @@ public record LivroRequestDTO(
 
         String autor,
 
-        int lancamento
+        int lancamento,
+
+        int quantidade
 
 ) {
 }

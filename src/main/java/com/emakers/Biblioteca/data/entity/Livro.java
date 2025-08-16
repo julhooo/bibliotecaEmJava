@@ -26,14 +26,21 @@ public class Livro {
     @Column (name = "lancamento", nullable = false)
     private int lancamento;
 
-    @Column (name ="emprestado")
-    private boolean emprestado = false;
+    @Column (name = "quantidade", nullable = false)
+    private int quantidade;
+
+    @Column (name = "emprestados", nullable = false)
+    private int emprestados=0;
+
+    @Column (name ="disponivel")
+    private boolean disponivel = true;
 
     @Builder
     public Livro(LivroRequestDTO livrorequestdto){
         this.nome = livrorequestdto.nome();
         this.autor = livrorequestdto.autor();
         this.lancamento = livrorequestdto.lancamento();
+        this.quantidade = livrorequestdto.quantidade();
     }
 
 }

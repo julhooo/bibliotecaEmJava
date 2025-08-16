@@ -59,15 +59,18 @@ public class EmprestimoService {
     public String createEmprestimo(EmprestimoRequestDTO emprestimoRequestDTO){
         Pessoa pessoa = returnPessoa(emprestimoRequestDTO);
         Livro livro = returnLivro(emprestimoRequestDTO);
-        if(livro.isEmprestado()){
-            return "Este livro está emprestado";
+        if(!livro.isDisponivel()){
+            return "Todos estão emprestados";
         }
         if(pessoa.getEmprestimos()==5){
             return "Limite de empréstimos atingido";
         }
         else {
 
-            livro.setEmprestado(true);
+            livro.setEmprestados(livro.getEmprestados()+1);
+            if(livro.getEmprestados()==livro.getQuantidade()){
+                livro.setDisponivel(false);
+            }
             livroRepository.save(livro);
             pessoa.setEmprestimos(pessoa.getEmprestimos()+1);
             pessoaRepository.save(pessoa);
@@ -109,7 +112,8 @@ public class EmprestimoService {
         Pessoa pessoa = emprestimo.getPessoa();
         Livro livro = emprestimo.getLivro();
 
-        livro.setEmprestado(false);
+        livro.setEmprestados(livro.getEmprestados()-1);
+        livro.setDisponivel(true);
         livroRepository.save(livro);
         pessoa.setEmprestimos(pessoa.getEmprestimos()-1);
         pessoaRepository.save(pessoa);

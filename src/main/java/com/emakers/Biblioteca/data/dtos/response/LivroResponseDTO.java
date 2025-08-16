@@ -10,7 +10,9 @@ public record LivroResponseDTO(
 
         int lancamento,
 
-        boolean emprestado
+        int quantidade,
+
+        boolean disponivel
 
 ) {
     public LivroResponseDTO(Livro livro){
@@ -18,7 +20,8 @@ public record LivroResponseDTO(
                 livro.getNome(),
                 livro.getAutor(),
                 livro.getLancamento(),
-                livro.isEmprestado()
+                livro.getQuantidade(),
+                livro.isDisponivel()
         );
     }
 }

@@ -50,10 +50,13 @@ public class PessoaService {
 
     public String deletePessoa (Long idPessoa){
         Pessoa pessoa = returnPessoa(idPessoa);
+        if(pessoa.getEmprestimos()!=0){
+            return "O usuário possui empréstimos em andamento";
+        } else {
         pessoaRepository.delete(pessoa);
 
         return "Usuário " + idPessoa + " deletado com sucesso!";
-    }
+    }}
 
     public Pessoa returnPessoa (Long idPessoa){
         return pessoaRepository.findById(idPessoa).orElseThrow(()->new RuntimeException("Usuário não cadastrado."));
